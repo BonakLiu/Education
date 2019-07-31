@@ -1,7 +1,9 @@
 package com.example.education;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.education.objects.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -20,9 +22,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+    private ImageView touxiang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "开发中……", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -45,8 +48,14 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        //侧边栏头部
+//        View drawview = navigationView.inflateHeaderView(R.layout.nav_header_main);
+//        touxiang = (ImageView) findViewById(R.id.slide_head_touxiang);
+//        touxiang.setOnClickListener(this);
+        //User user = User.getInstance();
     }
 
+    //返回键缩回侧边栏
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -57,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //右上角三点
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -64,6 +74,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    //右上角选项选择
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -79,20 +90,32 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    //侧边栏选项选择
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
+        if (id == R.id.nav_kebiao) {
+            //跳转到课表页面
+            Intent intent = new Intent(this, CourseTable.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_geren) {
+            if (User.getUserType() == 3) {
+                //跳转到登录页面
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            } else {
+                //跳转到个人信息
+                Intent intent = new Intent(this, GeRenActivity.class);
+                startActivity(intent);
+            }
         } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
+            Intent intent = new Intent(this, SectionChooseActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_fabu) {
+            Intent intent = new Intent(this, CourseChooseActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -102,5 +125,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+        }
     }
 }

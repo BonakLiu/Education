@@ -2,7 +2,7 @@ package com.example.education.tools;
 
 import android.util.Log;
 
-import com.sun.script.javascript.JSAdapter;
+//import com.sun.script.javascript.JSAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

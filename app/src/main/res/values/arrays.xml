@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="week">
+        <item>week1</item>
+        <item>week2</item>
+        <item>week3</item>
+        <item>week4</item>
+        <item>week5</item>
+        <item>week6</item>
+        <item>week7</item>
+        <item>week8</item>
+    </string-array>
+    <string-array name="xingqi">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+    </string-array>
+    <string-array name="jieci">
+        <item>12</item>
+        <item>34</item>
+        <item>56</item>
+        <item>78</item>
+    </string-array>
+</resources>
