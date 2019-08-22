@@ -16,15 +16,22 @@ import java.util.List;
 
 public class SectionAdapter extends ArrayAdapter<Section> {
     private int resourseId;
-    private ArrayList<Integer> selectedPosition = new ArrayList<>();
+    private int selectedPosition = -1;
 
-    public void add(int a) {
-        Integer temp = new Integer(a);
-        selectedPosition.add(temp);
+    //    public void add(int a) {
+//        Integer temp = new Integer(a);
+//        selectedPosition.add(temp);
+//    }
+//    public void remove(int a) {
+//        Integer temp = new Integer(a);
+//        selectedPosition.remove(temp);
+//    }
+    public int getSelectedPosition() {
+        return selectedPosition;
     }
-    public void remove(int a) {
-        Integer temp = new Integer(a);
-        selectedPosition.remove(temp);
+
+    public void setSelectedPosition(int selectedPosition) {
+        this.selectedPosition = selectedPosition;
     }
 
     public SectionAdapter(Context context, int textViewResourceId, List<Section> objects) {
@@ -50,7 +57,7 @@ public class SectionAdapter extends ArrayAdapter<Section> {
         jeici.setText(section.getTimeslot());
         keshi.setText(section.getClassroom());
         yuliang.setText(section.getYuliang());
-        if (contain(selectedPosition,position)) {
+        if (selectedPosition == position) {
             view.setBackgroundColor(Color.parseColor("#F4FA58"));
         } else {
             view.setBackgroundColor(Color.TRANSPARENT);
@@ -58,13 +65,13 @@ public class SectionAdapter extends ArrayAdapter<Section> {
         return view;
     }
 
-    public boolean contain(ArrayList<Integer> array, int a) {
-        for (int i = 0; i < array.size(); i++) {
-            if (array.get(i) == a) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean contain(ArrayList<Integer> array, int a) {
+//        for (int i = 0; i < array.size(); i++) {
+//            if (array.get(i) == a) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }
 

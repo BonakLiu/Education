@@ -156,6 +156,11 @@ public class CourseChooseActivity extends AppCompatActivity {
 
     private JSONObject getJsonDataCourse() {
         JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("type", User.getUserType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return jsonObject;
     }
 
@@ -188,6 +193,7 @@ public class CourseChooseActivity extends AppCompatActivity {
             jsonObject.put("timeslot", timeslot);
             jsonObject.put("classroom", jiaoshi.getText());
             jsonObject.put("tid", jiaoshiid.getText());
+            jsonObject.put("type", User.getUserType());
         } catch (Exception e) {
             e.printStackTrace();
         }

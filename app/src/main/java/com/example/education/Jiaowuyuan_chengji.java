@@ -2,15 +2,15 @@ package com.example.education;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.education.objects.Course;
 import com.example.education.objects.Section;
 import com.example.education.objects.User;
 import com.example.education.tools.HttpsConnect;
@@ -22,18 +22,23 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SectionChooseActivity extends AppCompatActivity {
+public class Jiaowuyuan_chengji extends AppCompatActivity {
+    private Button check;
+    private TextView view;
+    private EditText id;
+    private EditText grade;
     private Button tijiao;
-    //发送
+
     private String sectionid = "weixuanze";
-    private final String getSectionListUrl = "http://129.211.12.161:8080/Login/selectServlet";
-    private final String commitCourseUrl = "http://129.211.12.161:8080/Login/chooseServlet";
     private List<Section> sectionData = new ArrayList<>();
+    private final String getSectionListUrl = "http://129.211.12.161:8080/Login/selectServlet";
+    private final String getStudentsListUrl = "http://129.211.12.161:8080/Login/GetRoll";
+    private final String setGradetUrl = "http://129.211.12.161:8080/Login/setGrade";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_section_choose);
+        setContentView(R.layout.activity_jiaowuyuan_chengji);
         HttpsConnect.sendRequest(getSectionListUrl, "POST", getJsonDataSection(), new HttpsListener() {
             @Override
             public void success(String response) {
@@ -45,9 +50,46 @@ public class SectionChooseActivity extends AppCompatActivity {
                 exception.printStackTrace();
             }
         });
-        final SectionAdapter adapter = new SectionAdapter(SectionChooseActivity.this, R.layout.section_item, sectionData);
-        final ListView sectionList = (ListView) findViewById(R.id.section_choose_section);
-        //权宜之计
+        final SectionAdapter adapter = new SectionAdapter(Jiaowuyuan_chengji.this, R.layout.section_item, sectionData);
+        final ListView sectionList = (ListView) findViewById(R.id.chengji_section);
+
+        check = (Button) findViewById(R.id.chengji_check);
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpsConnect.sendRequest(getStudentsListUrl, "POST", getJsonDataStu(), new HttpsListener() {
+                    @Override
+                    public void success(String response) {
+                        catchResponseStu(response);
+                    }
+
+                    @Override
+                    public void failed(Exception exception) {
+                        exception.printStackTrace();
+                    }
+                });
+            }
+        });
+        view = (TextView) findViewById(R.id.chengji_view);
+        id = (EditText) findViewById(R.id.chengji_id);
+        grade = (EditText) findViewById(R.id.chengji_grade);
+        tijiao = (Button) findViewById(R.id.chengji_tijiao);
+        tijiao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpsConnect.sendRequest(setGradetUrl, "POST", getJsonDataGrade(), new HttpsListener() {
+                    @Override
+                    public void success(String response) {
+                        catchResponseGrade(response);
+                    }
+
+                    @Override
+                    public void failed(Exception exception) {
+                        exception.printStackTrace();
+                    }
+                });
+            }
+        });
         try {
             Thread.sleep(300);
         } catch (Exception e) {
@@ -61,28 +103,7 @@ public class SectionChooseActivity extends AppCompatActivity {
                 sectionid = section.getSectionid();
                 adapter.setSelectedPosition(i);
                 adapter.notifyDataSetInvalidated();
-                Toast.makeText(SectionChooseActivity.this, "已选择" + section.getCoursename(), Toast.LENGTH_LONG).show();
-            }
-        });
-        tijiao = (Button) findViewById(R.id.section_choose_tijiao);
-        tijiao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (sectionid == "weixuanze") {
-                    Toast.makeText(SectionChooseActivity.this, "请选择课程", Toast.LENGTH_LONG).show();
-                } else {
-                    HttpsConnect.sendRequest(commitCourseUrl, "POST", getJsonDataTakes(), new HttpsListener() {
-                        @Override
-                        public void success(String response) {
-                            catchResponseTakes(response);
-                        }
-
-                        @Override
-                        public void failed(Exception exception) {
-                            exception.printStackTrace();
-                        }
-                    });
-                }
+                Toast.makeText(Jiaowuyuan_chengji.this, "已选择" + section.getCoursename(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -91,7 +112,7 @@ public class SectionChooseActivity extends AppCompatActivity {
     private JSONObject getJsonDataSection() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("type", User.getUserType());
+            jsonObject.put("type", 0);//等后端改
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -121,12 +142,11 @@ public class SectionChooseActivity extends AppCompatActivity {
         }
     }
 
-    //学生选课
-    private JSONObject getJsonDataTakes() {
+    //获取学生列表
+    private JSONObject getJsonDataStu() {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("type", User.getUserType());
-            jsonObject.put("sid", User.getId());
             jsonObject.put("sectionid", sectionid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,8 +154,36 @@ public class SectionChooseActivity extends AppCompatActivity {
         return jsonObject;
     }
 
-    //标准
-    private void catchResponseTakes(final String response) {
+    private void catchResponseStu(final String response) {
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            String temp = "";
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                temp += jsonObject.getString("sid");
+                temp += "\n";
+            }
+            view.setText(temp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //设置成绩
+
+    private JSONObject getJsonDataGrade() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("type", User.getUserType());
+            jsonObject.put("sectionid", sectionid);
+            jsonObject.put("grade", grade.getText());
+            jsonObject.put("sid", id.getText());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    private void catchResponseGrade(final String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
             boolean result = jsonObject.getBoolean("result");

@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_kebiao) {
             //跳转到课表页面
-            Intent intent = new Intent(this, CourseTable.class);
+            Intent intent = new Intent(this, RealTable.class);
             startActivity(intent);
         } else if (id == R.id.nav_geren) {
             if (User.getUserType() == 3) {
@@ -116,10 +116,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_fabu) {
             Intent intent = new Intent(this, CourseChooseActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_chengji) {
+            if (User.getUserType() == 1) {
+                Intent intent = new Intent(this, Jiaowuyuan_chengji.class);
+                startActivity(intent);
+            } else if (User.getUserType() == 0) {
+                Intent intent = new Intent(this, Xuesheng_chengji.class);
+                startActivity(intent);
+            }
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_pingjia) {
+            if (User.getUserType() == 1) {
+                Intent intent = new Intent(this, Jiaoshi_pingjia.class);
+                startActivity(intent);
+            } else if (User.getUserType() == 0) {
+                Intent intent = new Intent(this, xuesheng_pingjia.class);
+                startActivity(intent);
+            }
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
