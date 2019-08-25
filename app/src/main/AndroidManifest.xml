@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Xuesheng_chengji"></activity>
         <activity android:name=".Jiaowuyuan_chengji" />
-        <activity android:name=".xuesheng_pingjia" />
+        <activity android:name=".Xuesheng_pingjia" />
         <activity android:name=".Jiaoshi_pingjia" />
         <activity android:name=".SectionChooseActivity" />
         <activity android:name=".GeRenActivity" />

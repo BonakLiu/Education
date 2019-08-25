@@ -48,6 +48,7 @@ public class RealTable extends AppCompatActivity implements View.OnClickListener
     AlertDialog alertDialog;
 
     private final String getTakesListUrl = "http://129.211.12.161:8080/Login/studentclassmap";
+    private final String getTeaTakesListUrl = "http://129.211.12.161:8080/Login/teacherclassmap";
     public static String classString = "[";
 
     @Override
@@ -57,22 +58,37 @@ public class RealTable extends AppCompatActivity implements View.OnClickListener
         //隐藏标题栏
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-
         titleTextView = findViewById(R.id.id_title);
         layout = findViewById(R.id.id_layout);
         layout.setOnClickListener(this);
         initTimetableView();
-        HttpsConnect.sendRequest(getTakesListUrl, "POST", getJsonDataTakes(), new HttpsListener() {
-            @Override
-            public void success(String response) {
-                catchResponseTakes(response);
-            }
+        if (User.getUserType() == 0) {
+            HttpsConnect.sendRequest(getTakesListUrl, "POST", getJsonDataTakes(), new HttpsListener() {
+                @Override
+                public void success(String response) {
+                    catchResponseTakes(response);
+                }
 
-            @Override
-            public void failed(Exception exception) {
-                exception.printStackTrace();
-            }
-        });
+                @Override
+                public void failed(Exception exception) {
+                    exception.printStackTrace();
+                }
+            });
+        } else if (User.getUserType()==1) {
+            HttpsConnect.sendRequest(getTeaTakesListUrl, "POST", getJsonDatatTakes(), new HttpsListener() {
+                @Override
+                public void success(String response) {
+                    catchResponseTakes(response);
+                }
+
+                @Override
+                public void failed(Exception exception) {
+                    exception.printStackTrace();
+                }
+            });
+        }
+
+
         requestData();
     }
 
@@ -303,17 +319,27 @@ public class RealTable extends AppCompatActivity implements View.OnClickListener
     private JSONObject getJsonDataTakes() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("type", 0);
-            jsonObject.put("sid", "201730682010");
+            jsonObject.put("type", User.getUserType());
+            jsonObject.put("sid", User.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
         return jsonObject;
     }
-
+    private JSONObject getJsonDatatTakes() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("type", User.getUserType());
+            jsonObject.put("tid", User.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
     private void catchResponseTakes(final String response) {
         try {
             JSONArray jsonArray = new JSONArray(response);
+            classString = "[";
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 classString += "[\"2017-2018学年秋\", \"\", \"\", \"";

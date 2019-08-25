@@ -1,9 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".xuesheng_pingjia">
+    android:orientation="vertical"
+    tools:context=".Xuesheng_pingjia">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ListView
+        android:id="@+id/xuesheng_pingjia_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"></ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="教学评分："
+                android:textColor="#000"
+                android:textSize="25dp" />
+
+            <Spinner
+                android:id="@+id/xuesheng_pingjia_pingfen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:entries="@array/pingfen"
+                android:gravity="center|center_horizontal"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="编辑教学评价："
+            android:textColor="#000 "
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/xuesheng_pingjia_pingjia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|top"
+            android:inputType="textMultiLine"
+            android:minLines="12" />
+
+        <Button
+            android:id="@+id/xuesheng_pingjia_tijiao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提交" />
+    </LinearLayout>
+</LinearLayout>

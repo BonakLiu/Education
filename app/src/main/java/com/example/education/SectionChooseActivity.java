@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.education.objects.Course;
@@ -24,6 +25,7 @@ import java.util.List;
 
 public class SectionChooseActivity extends AppCompatActivity {
     private Button tijiao;
+    private TextView tishi;
     //发送
     private String sectionid = "weixuanze";
     private final String getSectionListUrl = "http://129.211.12.161:8080/Login/selectServlet";
@@ -45,6 +47,7 @@ public class SectionChooseActivity extends AppCompatActivity {
                 exception.printStackTrace();
             }
         });
+        tishi = (TextView) findViewById(R.id.section_choose_tishi);
         final SectionAdapter adapter = new SectionAdapter(SectionChooseActivity.this, R.layout.section_item, sectionData);
         final ListView sectionList = (ListView) findViewById(R.id.section_choose_section);
         //权宜之计
@@ -141,9 +144,9 @@ public class SectionChooseActivity extends AppCompatActivity {
             boolean result = jsonObject.getBoolean("result");
             String reason = jsonObject.getString("reason");
             if (result) {
-                Toast.makeText(this, "成功", Toast.LENGTH_SHORT).show();
+                tishi.setText("选课成功！");
             } else {
-                Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
+                tishi.setText(reason);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.education.objects.Course;
@@ -34,7 +35,9 @@ public class CourseChooseActivity extends AppCompatActivity {
     private Spinner jiaci;
     private EditText jiaoshi;
     private EditText jiaoshiid;
+    private EditText margin;
     private Button commit;
+    private TextView tishi;
     //接收
     private List<Course> courseData = new ArrayList<>();
     //发送
@@ -71,6 +74,7 @@ public class CourseChooseActivity extends AppCompatActivity {
         jiaci = (Spinner) findViewById(R.id.course_choose_jieci);
         jiaoshi = (EditText) findViewById(R.id.course_choose_jiaoshi);
         jiaoshiid = (EditText) findViewById(R.id.course_choose_jiaoshiid);
+        margin = (EditText) findViewById(R.id.course_choose_margin);
         commit = (Button) findViewById(R.id.course_choose_commit);
 
         kaishizhou.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -170,7 +174,7 @@ public class CourseChooseActivity extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String id = jsonObject.getString("id");
-                String name = jsonObject.getString("name");
+                String name = jsonObject.getString("coursename");
                 String credits = jsonObject.getString("credits");
                 Course course = new Course(id, name, credits);
                 courseData.add(course);
@@ -186,11 +190,11 @@ public class CourseChooseActivity extends AppCompatActivity {
             jsonObject.put("sectionid", Long.toString(System.currentTimeMillis()));
             jsonObject.put("courseid", courseid);
             jsonObject.put("coursename", coursename);
-            jsonObject.put("margin", "80");
+            jsonObject.put("margin", margin.getText());
             jsonObject.put("startdate", startdate);
             jsonObject.put("enddate", enddate);
             jsonObject.put("day", day);
-            jsonObject.put("timeslot", timeslot);
+            jsonObject.put("timeslot",day+timeslot);
             jsonObject.put("classroom", jiaoshi.getText());
             jsonObject.put("tid", jiaoshiid.getText());
             jsonObject.put("type", User.getUserType());

@@ -88,6 +88,11 @@
             android:layout_weight="4">
 
         </ListView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/section_choose_tishi"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/section_choose_tijiao"

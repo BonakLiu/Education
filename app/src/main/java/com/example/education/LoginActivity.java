@@ -99,22 +99,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.e("LOGIN_TAG", response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     boolean result = jsonObject.getBoolean("result");
                     String reason = jsonObject.getString("reason");
                     if (result) {
                         Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                        User.setUserType(type);
-                        User.setId(jsonObject.getString("id"));
-                        User.setName(jsonObject.getString("name"));
-                        User.setCollege(jsonObject.getString("college"));
-                        User.setMajor(jsonObject.getString("major"));
-                        User.setGrade(jsonObject.getString("grade"));
-                        User.setBanji(jsonObject.getString("banji"));
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        if (type == 0) {
+                            User.setUserType(type);
+                            User.setId(jsonObject.getString("id"));
+                            User.setName(jsonObject.getString("name"));
+                            User.setCollege(jsonObject.getString("college"));
+                            User.setMajor(jsonObject.getString("major"));
+                            User.setGrade(jsonObject.getString("grade"));
+                            User.setBanji(jsonObject.getString("banji"));
+                        } else if (type == 1) {
+                            User.setUserType(type);
+                            User.setId(jsonObject.getString("id"));
+                            User.setName(jsonObject.getString("name"));
+                            User.setCollege(jsonObject.getString("college"));
+                            User.setMajor(jsonObject.getString("major"));
+                        } else if (type == 2) {
+                            User.setUserType(type);
+                            User.setId(jsonObject.getString("id"));
+                            User.setName(jsonObject.getString("name"));
+                        }
+                        finish();
                     } else {
                         Toast.makeText(LoginActivity.this, reason, Toast.LENGTH_SHORT).show();
                     }

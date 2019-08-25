@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private ImageView touxiang;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        touxiang = (ImageView) findViewById(R.id.slide_head_touxiang);
 //        touxiang.setOnClickListener(this);
         //User user = User.getInstance();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 
     //返回键缩回侧边栏
@@ -96,11 +99,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_kebiao) {
-            //跳转到课表页面
-            Intent intent = new Intent(this, RealTable.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_geren) {
+        if (id == R.id.nav_kebiao) {//课表
+            if (User.getUserType() == 0 || User.getUserType() == 1) {
+                //跳转到课表页面
+                Intent intent = new Intent(this, RealTable.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "请用学生或教师账号登录", Toast.LENGTH_LONG).show();
+            }
+
+        } else if (id == R.id.nav_geren) {//个人中心
             if (User.getUserType() == 3) {
                 //跳转到登录页面
                 Intent intent = new Intent(this, LoginActivity.class);
@@ -110,31 +118,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(this, GeRenActivity.class);
                 startActivity(intent);
             }
-        } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(this, SectionChooseActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_fabu) {
-            Intent intent = new Intent(this, CourseChooseActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_chengji) {
+        } else if (id == R.id.nav_slideshow) {//学生选课
+            if (User.getUserType() == 0) {
+                Intent intent = new Intent(this, SectionChooseActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "请用学生账号登录", Toast.LENGTH_LONG).show();
+            }
+        } else if (id == R.id.nav_fabu) {//发布课程
+            if (User.getUserType() == 2) {
+                Intent intent = new Intent(this, CourseChooseActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "请用教务员账号登录", Toast.LENGTH_LONG).show();
+            }
+        } else if (id == R.id.nav_chengji) {//成绩
             if (User.getUserType() == 1) {
                 Intent intent = new Intent(this, Jiaowuyuan_chengji.class);
                 startActivity(intent);
             } else if (User.getUserType() == 0) {
                 Intent intent = new Intent(this, Xuesheng_chengji.class);
                 startActivity(intent);
+            }else {
+                Toast.makeText(this, "请用教师或学生账号登录", Toast.LENGTH_LONG).show();
             }
-
         } else if (id == R.id.nav_pingjia) {
             if (User.getUserType() == 1) {
                 Intent intent = new Intent(this, Jiaoshi_pingjia.class);
                 startActivity(intent);
             } else if (User.getUserType() == 0) {
-                Intent intent = new Intent(this, xuesheng_pingjia.class);
+                Intent intent = new Intent(this, Xuesheng_pingjia.class);
                 startActivity(intent);
+            }else {
+                Toast.makeText(this, "请用教师或学生账号登录", Toast.LENGTH_LONG).show();
             }
         }
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
